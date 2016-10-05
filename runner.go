@@ -48,13 +48,18 @@ func handleCommand(hndlr *cmdHandler) (int, []byte, float64, error) {
 		emitEvent(fmt.Sprintf("Cron %v starting on %v", hndlr.opts.Label, hndlr.hostname), fmt.Sprintf("UUID: %v\n", hndlr.uuid), hndlr.opts.Label, "info", hndlr)
 	}
 
-	// set up the output buffer for the command
+	// set up the output buffers for the command
 	var b bytes.Buffer
+	var c bytes.Buffer
 
-	// comnbine stdout and stderr to the same buffer
+	// setup seperate streams only on passthru
+	// combine stdout and stderr to the same buffer
 	// if we actually plan on using the command output
 	// otherwise, /dev/null
-	if hndlr.opts.AllEvents || hndlr.opts.FailEvent || hndlr.opts.LogFail {
+	if hndlr.opts.Passthru {
+		hndlr.cmd.Stdout = &b
+		hndlr.cmd.Stderr = &c
+	} else if hndlr.opts.AllEvents || hndlr.opts.FailEvent || hndlr.opts.LogFail {
 		hndlr.cmd.Stdout = &b
 		hndlr.cmd.Stderr = &b
 	} else {
@@ -233,6 +238,14 @@ func handleCommand(hndlr *cmdHandler) (int, []byte, float64, error) {
 		body = fmt.Sprintf("%voutput: %v", body, cmdOutput)
 
 		emitEvent(title, body, hndlr.opts.Label, alertType, hndlr)
+	}
+
+	// Passthru stdin/stdout to controlling tty
+	if hndlr.opts.Passthru {
+		fmt.Printf("%v", string(out))
+		fmt.Fprintf(os.Stderr, "%v", string(c.Bytes()))
+		// no need to reprint stdout/stderr on bailOut
+		hndlr.opts.Sensitive = true
 	}
 
 	// this code block is meant to be ran last
