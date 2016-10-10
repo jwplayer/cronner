@@ -1,24 +1,28 @@
 language: go
 go:
-- 1.5.3
+- 1.7.1
 addons:
   apt:
     packages:
     - time
 sudo: false
-env: 'PD_PROJECT=cronner GOARCH=amd64 GOOS=linux PD_BUILD_NAME="$PD_PROJECT-$GOOS-$GOARCH-$TRAVIS_TAG"'
+env: PD_PROJECT=cronner GOARCH=amd64 GOOS=linux PD_BUILD_NAME="$PD_PROJECT-$GOOS-$GOARCH-$TRAVIS_TAG"
 script: go test -v ./... -check.vv
 before_deploy:
 - mkdir build
 - mkdir $PD_BUILD_NAME
 - go build -o $PD_BUILD_NAME/$PD_PROJECT
+- chmod a+x $PD_BUILD_NAME/*
 - tar -czf build/$PD_BUILD_NAME.tar.gz $PD_BUILD_NAME/
+- sha256sum build/*.tar.gz > build/SHA256SUMS
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: Rxly2mwatA2tHz9MscZR/YdU7TR3S0kUeQv1DmKp7x0zlcPMcDtD9hQcRrv5W3JL3FsxUn9hoLQRmYPxgKmHBRBdFjn9s3tqx8wfnWkcaVHvwz3dxYEJQxlQVgl19gGFlL9uXfOt/PR2pMpFxSLdudwyBvCR9cXMWr0Y4MRHfuZtrfb0q1EGaJuhXb6hcp1STrKUgEUiv7fDcQOS6KIiPdQey6hELdidWTCIHgo2C6w+r3z2PG2y7w5s7S4vSFicNSsyV/wRPv3Eelcv2YSddcGrltb+Pd/weKDTfvLLzA3jMbFpqI/XSnr/szrXtrYomQE/9pdBwfgHD9gZ7tcRrTOVVx5bIx7+CbZ4CJdIQtHKdqjFHmXoAjCUJYnSfLMy9c9dZ42RGrmw7P1z3hB5wwLRrd3PXXlmV1YfEJt5deugXHxHxC/a5rEMNEJxPhHL4yaoxL8gO1v02o21C4DCVDalgJ18M2YjX2NCujoAfYls5ib/QCeoZAxHz/zVI80SWvqdSC/vqm4+pbzdw6JriRcUvdFb6owU1mQjloO4fGCJkT3Dhqaa916UKuqjB2ogg9SQpyPvx8VX6q7yCOzV0sk4WZZJfImiys+ifZaJoecVth8jAISdOkIJIm9a9oPy6IOskYQKP51sjhqvS/G5wmxl1Ips1Ik42iUsXpI+7Us=
-  file: build/$PD_BUILD_NAME.tar.gz
+    secure: nfjwtrvD6w6rhVMFqN63qqYOFkRLPfgohYGqEjy2aIMr48ZCy8+mlqSXVydg7xHj+udQ1VGLnOYU/qH9inAz6pBv5VSckBn69uzDStpJYOXzt2sc1jxLaSqTTh7nnwItN7IO0XxvKCWQmHbYKZWUYjIG3x9/Pr7oNKzHFbpuoJF2FDM+B1gPH02QCaekvPdwmELesje7HCv4xDNgrn2apvs20sZY/jqJQSSFTwFzc5AWEM4DfJ5QBnvq4BA2+VtOGQXp5ZpdpH+r/5Xt4uo35hwrWq15w7+YNFFmYMkgtzVQ2AO/v6C1Mx4RPAktBf6lYqJfF317yuTpMB+cQ30cUn+QXxFmZxNR+7RhT768CKZF1QlYlS8rbTxxev6EwDRanC/tjzTo/+jrhw6vdee5BYo6D0CwAUOydXnjLu4Dp/TpgQZy2Fw3MhH4en+IQVQAxp6lEmMKri+WPFQmd8apRBHHlO8aX6/L4GFcgauSJ5lG2U4hE8vdwCKOBxZa09DiVe10wnOysBEmP6fPAdd5bZa493FV4HVoQOF3uqMRtmeCIFk6XqhcUAokh0LRoMMz9svBl94ifzpnDVi68k3+x+V7+QVfj6UpGJ8Vhy4sLCCimZdqD8DWyC024lgMgxf0JLo22mFkLLTmRtU7ZWLhu1mfSjt/0Wo1GoOgtXTnRbQ=
+  file:
+  - build/$PD_BUILD_NAME.tar.gz
+  - build/SHA256SUMS
   on:
-    repo: PagerDuty/cronner
+    repo: jwplayer/cronner
     tags: true
