@@ -14,7 +14,7 @@ before_deploy:
 - go build -o $PD_BUILD_NAME/$PD_PROJECT
 - chmod a+x $PD_BUILD_NAME/*
 - tar -czf build/$PD_BUILD_NAME.tar.gz $PD_BUILD_NAME/
-- sha256sum build/*.tar.gz > build/SHA256SUMS
+- cd build && sha256sum *.tar.gz > SHA256SUM
 deploy:
   provider: releases
   skip_cleanup: true
@@ -22,7 +22,7 @@ deploy:
     secure: nfjwtrvD6w6rhVMFqN63qqYOFkRLPfgohYGqEjy2aIMr48ZCy8+mlqSXVydg7xHj+udQ1VGLnOYU/qH9inAz6pBv5VSckBn69uzDStpJYOXzt2sc1jxLaSqTTh7nnwItN7IO0XxvKCWQmHbYKZWUYjIG3x9/Pr7oNKzHFbpuoJF2FDM+B1gPH02QCaekvPdwmELesje7HCv4xDNgrn2apvs20sZY/jqJQSSFTwFzc5AWEM4DfJ5QBnvq4BA2+VtOGQXp5ZpdpH+r/5Xt4uo35hwrWq15w7+YNFFmYMkgtzVQ2AO/v6C1Mx4RPAktBf6lYqJfF317yuTpMB+cQ30cUn+QXxFmZxNR+7RhT768CKZF1QlYlS8rbTxxev6EwDRanC/tjzTo/+jrhw6vdee5BYo6D0CwAUOydXnjLu4Dp/TpgQZy2Fw3MhH4en+IQVQAxp6lEmMKri+WPFQmd8apRBHHlO8aX6/L4GFcgauSJ5lG2U4hE8vdwCKOBxZa09DiVe10wnOysBEmP6fPAdd5bZa493FV4HVoQOF3uqMRtmeCIFk6XqhcUAokh0LRoMMz9svBl94ifzpnDVi68k3+x+V7+QVfj6UpGJ8Vhy4sLCCimZdqD8DWyC024lgMgxf0JLo22mFkLLTmRtU7ZWLhu1mfSjt/0Wo1GoOgtXTnRbQ=
   file:
   - build/$PD_BUILD_NAME.tar.gz
-  - build/SHA256SUMS
+  - build/SHA256SUM
   on:
     repo: jwplayer/cronner
     tags: true
