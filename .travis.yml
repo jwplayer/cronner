@@ -14,7 +14,7 @@ before_deploy:
 - go build -o $PD_BUILD_NAME/$PD_PROJECT
 - chmod a+x $PD_BUILD_NAME/*
 - tar -czf build/$PD_BUILD_NAME.tar.gz $PD_BUILD_NAME/
-- cd build && sha256sum *.tar.gz > SHA256SUM
+- cd build && sha256sum *.tar.gz > SHA256SUM; cd -
 deploy:
   provider: releases
   skip_cleanup: true
