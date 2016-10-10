@@ -1,5 +1,5 @@
 # cronner
-[![TravisCI Build Status](https://img.shields.io/travis/PagerDuty/cronner/master.svg?style=flat)](https://travis-ci.org/PagerDuty/cronner)
+[![TravisCI Build Status](https://img.shields.io/travis/jwplayer/cronner/master.svg?style=flat)](https://travis-ci.org/jwplayer/cronner)
 
 `cronner` is a command line utility to that wraps periodic (cron) jobs for statistics gathering and success monitoring. The amount of time the command took to ran, as well as the return code, are emitted as vanilla statsd metrics to port 8125. It also implements file-level locking for very simple, and dumb, job semaphore.
 
