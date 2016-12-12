@@ -1,6 +1,9 @@
 # cronner
 [![TravisCI Build Status](https://img.shields.io/travis/jwplayer/cronner/master.svg?style=flat)](https://travis-ci.org/jwplayer/cronner)
 
+## :warning: THIS REPOSITORY IS DEPRECATED AND UNMAINTAINED, THE FEATURES IN THIS FORK WERE MERGED INTO THE NEW SOURCE REPOSITORY (https://github.com/theckman/cronner) AND ARE INCLUDED IN VERSIONS 0.4.0+. 
+## :bangbang: THIS REPOSITORY WILL BE DELETED AT A FUTURE DATE!
+
 `cronner` is a command line utility to that wraps periodic (cron) jobs for statistics gathering and success monitoring. The amount of time the command took to ran, as well as the return code, are emitted as vanilla statsd metrics to port 8125. It also implements file-level locking for very simple, and dumb, job semaphore.
 
 The utility also supports emitting [DogStatsD Events](http://docs.datadoghq.com/guides/dogstatsd/#events) under the following occasions:
